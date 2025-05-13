@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@layer utilities {
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+  }
+}
