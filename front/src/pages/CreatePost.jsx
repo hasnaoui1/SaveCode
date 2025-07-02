@@ -20,13 +20,8 @@ export default function CreatePost() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [comments, setComments] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
-  const renderCount = useRef(0);
 
-  useEffect(() => {
-    renderCount.current += 1;
-    console.log(`CreatePost rendered ${renderCount.current} times`);
-  });
-
+  
   const createSnippetIfNeeded = async () => {
     console.log("createSnippetIfNeeded called, snippetId:", snippetId);
     if (snippetId === undefined || snippetId === null) {
