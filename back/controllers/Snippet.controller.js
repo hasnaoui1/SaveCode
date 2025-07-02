@@ -233,4 +233,39 @@ exports.executeSnippet = async (req, res) => {
       fs.rmSync(tempBase, { recursive: true, force: true });
     }
   };
-  
+
+
+const { Op } = require("sequelize");
+
+exports.searchSnippets = async (req, res) => {
+  try {
+    const { title } = req.params;
+
+    const whereClause = title && title.trim() !== ""
+      ? { title: { [Op.iLike]: `%${title}%` } }
+      : {};
+
+    const snippets = await Snippet.findAll({
+      where: whereClause,
+      include: [
+        { model: User, attributes: ['id', 'username'] },
+        { model: Favorite },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+
+    const enrichedSnippets = snippets.map(snippet => {
+      const snippetJson = snippet.toJSON();
+      snippetJson.favoritesCount = snippet.Favorites.length;
+      snippetJson.owner = snippetJson.User?.username || 'Unknown';
+      delete snippetJson.Favorites;
+      delete snippetJson.User;
+      return snippetJson;
+    });
+
+    res.json(enrichedSnippets);
+  } catch (error) {
+    console.error('Search Snippets Error:', error);
+    res.status(500).json({ message: 'Failed to search snippets' });
+  }
+};

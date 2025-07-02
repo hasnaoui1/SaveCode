@@ -45,6 +45,17 @@ export default function EngagementBar({
     setLikes((prev) => prev + 1);
     await axiosInstance.post(`/addFavorite`, { snippetId });
   };
+  const handleCopyLink = () => {
+    const link = `${window.location.origin}/create/${snippetId}`;
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+  alert("Link copied to clipboard!"); // Simple
+})
+      .catch((err) => {
+        console.error("Failed to copy link:", err);
+      });
+  };
 
   const handleCollabClick = () => {
     sendCollabRequest(snippetOwnerId, snippetId);
@@ -108,7 +119,7 @@ export default function EngagementBar({
 
         <button
           className="flex items-center space-x-2 hover:text-white"
-          onClick={onCopyLink}
+          onClick={handleCopyLink}
         >
           <LinkIcon className="h-6 w-6 text-gray-400" />
           <span className="hidden sm:inline">Copy Link</span>

@@ -5,12 +5,14 @@ const commentController = require('./controllers/Comment.controller');
 const favoriteController = require('./controllers/Favorite.controller');
 
 const axios = require("axios");
+const UserController = require("./controllers/UserController");
 
 
 module.exports=(app)=>{
 app.post('/register', authController.register);
 app.post('/login', authController.login);
 app.get('/auth', verifyToken , authController.getAuth)
+app.put("/users/:id", UserController.updateProfile);
 
 app.post('/createS', verifyToken, snippetController.createSnippet);
 app.put('/updateS/:id', verifyToken, snippetController.updateSnippet);
@@ -18,6 +20,8 @@ app.delete('/deleteS/:id', verifyToken, snippetController.deleteSnippet);
 app.get('/getSById/:id', verifyToken,snippetController.getSnippetById);
 app.get('/getAllS', verifyToken,snippetController.getAllSnippets);
 app.post('/executeS',verifyToken, snippetController.executeSnippet);
+app.get('/search/:title', verifyToken,  snippetController.searchSnippets);
+
 
 app.post('/addComment', verifyToken, commentController.createComment);
 app.put('/UpdateComment/:id', verifyToken, commentController.updateComment);

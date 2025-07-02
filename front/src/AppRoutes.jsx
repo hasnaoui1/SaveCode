@@ -8,8 +8,8 @@ import Test from "./pages/Test";
 import Layout from "./pages/Layout";
 import { UserContext } from "./services/UserContext";
 import Posts from "./pages/Posts";
-import { Settings } from "lucide-react";
 import Settingsxd from "./pages/Settingsxd";
+import Searchx from "./pages/Searchx";
 
 export default function AppRoutes() {
   const { token } = useContext(UserContext);
@@ -36,6 +36,8 @@ export default function AppRoutes() {
             path="settings"
             element={token ? <Settingsxd /> : <Navigate to="/signin" replace />}
           />
+          <Route path="profile" element={<Posts />} />
+          <Route path="search/:title" element={<Searchx />} />
         </Route>
       </Routes>
     </BrowserRouter>

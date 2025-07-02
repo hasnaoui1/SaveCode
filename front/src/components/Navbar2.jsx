@@ -1,7 +1,19 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar2 = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const trimmed = searchTerm.trim();
+    if (trimmed) {
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+      setSearchTerm(""); // optional: clear input after navigating
+    }
+  };
+
   return (
     <nav className="flex items-center justify-between bg-[#1e1e1e] px-6 py-4">
       <div className="flex items-center space-x-2">
@@ -9,7 +21,10 @@ const Navbar2 = () => {
         <span className="text-white text-lg font-semibold">SaveCode</span>
       </div>
 
-      <div className="flex items-center bg-[#2a2a2a] px-3 py-1 rounded-md border border-[#333]">
+      <form
+        onSubmit={handleSearch}
+        className="flex items-center bg-[#2a2a2a] px-3 py-1 rounded-md border border-[#333]"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5 text-gray-400"
@@ -27,9 +42,11 @@ const Navbar2 = () => {
         <input
           type="text"
           placeholder="Search SaveCode"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="bg-transparent outline-none text-sm text-gray-300 px-2 w-64"
         />
-        <button className="text-gray-400 hover:text-white">
+        <button type="submit" className="text-gray-400 hover:text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
@@ -45,7 +62,7 @@ const Navbar2 = () => {
             />
           </svg>
         </button>
-      </div>
+      </form>
 
       <div className="flex items-center space-x-6">
         <NavLink
@@ -65,7 +82,8 @@ const Navbar2 = () => {
         <img
           className="w-8 h-8 rounded-full bg-black-900 flex items-center justify-center font-bold"
           src="use.png"
-        ></img>
+          alt="User Avatar"
+        />
       </div>
     </nav>
   );

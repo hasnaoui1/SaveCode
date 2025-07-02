@@ -1,12 +1,13 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "../services/UserContext";
-import { Link } from "lucide-react";
 
 const Navbar = () => {
   const { user, logout } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -18,6 +19,15 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const trimmed = searchTerm.trim();
+    if (trimmed) {
+      navigate(`/search/${encodeURIComponent(trimmed)}`);
+      setSearchTerm(""); // optional: clear input
+    }
+  };
+
   return (
     <nav className="flex items-center justify-between bg-[#1e1e1e] px-6 py-4">
       <NavLink to="/">
@@ -27,7 +37,10 @@ const Navbar = () => {
         </div>
       </NavLink>
 
-      <div className="flex items-center bg-[#2a2a2a] px-3 py-1 rounded-md border border-[#333]">
+      <form
+        onSubmit={handleSearch}
+        className="flex items-center bg-[#2a2a2a] px-3 py-1 rounded-md border border-[#333]"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5 text-gray-400"
@@ -45,9 +58,11 @@ const Navbar = () => {
         <input
           type="text"
           placeholder="Search SaveCode"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="bg-transparent outline-none text-sm text-gray-300 px-2 w-64"
         />
-        <button className="text-gray-400 hover:text-white">
+        <button type="submit" className="text-gray-400 hover:text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
@@ -63,7 +78,7 @@ const Navbar = () => {
             />
           </svg>
         </button>
-      </div>
+      </form>
 
       <div className="flex items-center space-x-6 relative" ref={dropdownRef}>
         <NavLink

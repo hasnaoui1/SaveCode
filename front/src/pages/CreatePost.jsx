@@ -22,7 +22,6 @@ export default function CreatePost() {
   const [isCreating, setIsCreating] = useState(false);
   const renderCount = useRef(0);
 
-  // Log renders for debugging
   useEffect(() => {
     renderCount.current += 1;
     console.log(`CreatePost rendered ${renderCount.current} times`);
@@ -42,7 +41,6 @@ export default function CreatePost() {
         return;
       }
       setIsCreating(true);
-      // Reset states for new snippet
       setText("");
       setResponse("");
       setComments([]);
@@ -99,11 +97,10 @@ export default function CreatePost() {
       console.log("Updating text from snippet:", snippet.code);
       setText(snippet.code);
     }
-    // Update comments when snippet changes
     if (snippet?.Comments) {
       setComments(snippet.Comments);
     }
-  }, [snippet, text]);
+  }, [snippet]);
 
   const handleTextChange = (newText) => {
     setText(newText);
@@ -122,6 +119,7 @@ export default function CreatePost() {
       console.log("Executing snippet:", snippetId);
       const data = await axiosInstance.post("/executeS", { snippetId });
       setResponse(data.output);
+      // here
       console.log("Fetching snippet after saveAndRun:", snippetId);
       const newSnippet = await fetchSnippetById(snippetId);
       console.log("Fetched snippet:", newSnippet);
