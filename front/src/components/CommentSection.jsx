@@ -75,7 +75,7 @@ const CommentsSection = () => {
               key={comment.id || index}
               className="comment flex space-x-4 p-4 border-b border-gray-600"
             >
-              <div className="bg-red-900 w-12 h-12 rounded-full flex items-center justify-center text-3xl font-bold">
+              <div className="bg-blue-900 w-12 h-12 rounded-full flex items-center justify-center text-3xl font-bold">
                 {comment.User?.username[0]?.toUpperCase()}
               </div>
               <div className="comment-content flex flex-col">

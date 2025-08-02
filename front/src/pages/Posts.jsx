@@ -1,11 +1,16 @@
 import { useSnippets } from "../services/SnippetContext";
 import SnippetCard from "../components/SnippetCard";
 import { UserContext } from "../services/UserContext";
-import { useContext } from "react";
+import { useContext , useState } from "react";
 import { format } from "date-fns";
+import LikedPosts from "./LikedPosts";
 const Posts = () => {
+
   const { user } = useContext(UserContext);
   const { snippets } = useSnippets();
+  const [activeTab, setActiveTab] = useState("posts");
+
+
 
   return (
     <div className="flex">
@@ -38,19 +43,19 @@ const Posts = () => {
 
       <div className="w-3/4 p-4">
         <div className="flex gap-4 mb-4 border-b border-gray-600">
-          <button className="pb-2 border-b-2 border-white font-semibold">
+          <button onClick={()=>setActiveTab("posts") }className={`pb-2 font-semibold ${activeTab=="posts"?"border-b-2 border-white text-white" : ""}`}>
             Posts
           </button>
-          <button className="pb-2 text-gray-400">Likes</button>
+          <button  onClick={()=>setActiveTab("likes")}className={`pb-2 font-semibold ${activeTab=="likes"?"border-b-2 border-white text-white" : ""}`}>Likes</button>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        { activeTab === "posts"?<div className="grid grid-cols-2 gap-4">
           {snippets
             .filter((s) => s?.userId === user?.id)
             .map((snippet, index) => (
               <SnippetCard key={index} snippet={snippet} />
             ))}
-        </div>
+        </div> : <LikedPosts/>}
       </div>
     </div>
   );

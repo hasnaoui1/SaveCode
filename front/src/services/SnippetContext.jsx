@@ -15,8 +15,13 @@ export const SnippetProvider = ({ children }) => {
   const [snippet, setSnippet] = useState(null);
 
   useEffect(() => {
+
     console.log("Fetching all snippets from /getAllS");
-    axiosInstance
+    fetchSnippets()
+  }, []);
+
+  const fetchSnippets = ()=>{
+      axiosInstance
       .get("/getAllS")
       .then((data) => {
         console.log("Snippets fetched:", data);
@@ -25,8 +30,7 @@ export const SnippetProvider = ({ children }) => {
       .catch((err) =>
         console.error("Error fetching all snippets:", err.message)
       );
-  }, []);
-
+  }
   const fetchSnippetById = useCallback(async (id) => {
     try {
       if (id) {
@@ -51,8 +55,18 @@ export const SnippetProvider = ({ children }) => {
     setSnippet(null);
   }, []);
 
+  const deleteSnippet= (id)=>{
+    axiosInstance.delete(`/deleteS/${id}`)
+    .then(data=>{console.log(data) 
+      fetchSnippets()
+
+    })
+    .catch(err=>console.log(err.message))
+
+  }
+
   const contextValue = useMemo(
-    () => ({ snippets, setSnippets, snippet, fetchSnippetById, resetSnippet }),
+    () => ({ snippets, setSnippets, snippet, fetchSnippetById, resetSnippet, deleteSnippet }),
     [snippets, snippet, fetchSnippetById, resetSnippet]
   );
 

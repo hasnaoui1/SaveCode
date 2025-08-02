@@ -30,11 +30,7 @@ export default function CreatePost() {
         return;
       }
       const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found, redirecting to signin");
-        navigate("/signin", { replace: true });
-        return;
-      }
+     
       setIsCreating(true);
       setText("");
       setResponse("");
